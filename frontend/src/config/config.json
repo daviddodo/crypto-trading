@@ -1,0 +1,12 @@
+{
+  "cc_apikey": "ce0223baa621c382181e6027a5a2c5882dd3c0243c15b939377f26717550b662",
+  "cc_call_url": "https://min-api.cryptocompare.com/data",
+
+  "coins": [
+    "BTC",
+    "ETC",
+    "EOS",
+    "ADA",
+    "TRX"
+  ]
+}
