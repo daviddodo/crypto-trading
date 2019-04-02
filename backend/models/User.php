@@ -10,7 +10,7 @@ class User extends Model  //user is sub-class of database
 	public $role;
 	public $status;
 
-	function __construct($email, $password)
+	function __construct($email, $password, $two_fa, $role, $status)
 	{
         parent::__construct();
 
@@ -21,30 +21,19 @@ class User extends Model  //user is sub-class of database
 		$this->status = 'active';
     }
 	
-	public function addUser($email, $password)
+	public function addUser()
 	{
-		$newUser = new User($data["email"], $data["password"], $data["two_fa"], $data["role"], $data["status"]);
-
 		$stmt = $this->_connection->prepare("INSERT INTO user (email, password, two_fa, role, status) value (:email, :password, :two_fa, :role, :status");
 		$stmt = execute((array)$newUser);
 	}
 
 	public function verifyDuplicate($email)
 	{
-		/*$stmt = $this->_connection->prepare("SELECT * FROM User WHERE email LIKE :email");
-		$stmt->execute([':email'=>$email]);
-		$stmt->setFetchMode(PDO::FETCH_CLASS, "User");
-		return ($stmt->fetch() != false);	//true = user exists, false = user does not exist*/
-		
 		return (getUser($email) != false);
 	}
 	
 	public function modifyPassword($email, $password)
 	{
-		/*$stmt = $this->_connection->prepare("SELECT * FROM User WHERE email LIKE :email");
-		$stmt->execute([':email'=>$email);
-		$stmt->setFetchMode(PDO::FETCH_CLASS, "User");
-		$user = $stmt->fetch();*/
 		$user = getUser($email);
 		
 		if (password_verify($password, $user->password)
@@ -54,10 +43,20 @@ class User extends Model  //user is sub-class of database
 		}
 	}
 	
-	public function modifyTwoFa()
+	/*public function modifyTwoFa($email, $two_fa)
 	{
+		if ($two_fa == 0)
+		{
+			$two_fa = 1;
+		}
+		else
+		{
+			$two_fa = 0;
+		}
 		
-	}
+		$stmt = $this->_connection->prepare("UPDATE User SET two_fa =  :status WHERE email = :email");
+		$stmt->execute(['status'=>$status, ':email'=>$email]);
+	}*/
 	
 	public function getUser($email)
 	{
